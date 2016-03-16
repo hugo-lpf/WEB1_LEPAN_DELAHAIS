@@ -11,21 +11,37 @@
 |
 */
 
+use Illuminate\Http\Request;
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome', ['id' => 100]);
 });
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| This route group applies the "web" middleware group to every route
-| it contains. The "web" middleware group is defined in your HTTP
-| kernel and includes session state, CSRF protection, and more.
-|
-*/
+
 
 Route::group(['middleware' => ['web']], function () {
-    //
+
+
+
+    Route::resource('/articles', 'PostController');
+
+    Route::get('/contact', ['as' => 'page.contact', 'uses' => function() {
+        return 'ok';
+    }]);
+
+
+
+
+
+});
+
+Route::group(['middleware' => 'web'], function () {
+    Route::auth();
+    Route::get('/', function (){
+        return view('welcome', ['id' => 100]);
+
+
+    });
+
+    Route::get('/home', 'HomeController@index');
 });
