@@ -3,9 +3,9 @@
 @else
     {!! Form::open(['route' => 'articles.store', 'method' => 'POST']) !!}
 @endif
-    <div class="form-group">
+    {{-- <div class="form-group">
         {!! Form::select('user_id', $users, null, ['class' => 'form-control']) !!}
-    </div>
+    </div> --}}
 
     <div class="form-group">
         {!! Form::text('title', null, [
@@ -18,5 +18,7 @@
         {!! Form::textarea('content', null, ['class' => 'form-control']) !!}
     </div>
 
-    {!! Form::submit('Envoyer', ['class' => 'btn btn-block']) !!}
+    <div class="text-center">
+        {!! Form::submit('Envoyer', ['class' => 'btn btn-primary']) !!}
+    </div>
 {!! Form::close() !!}

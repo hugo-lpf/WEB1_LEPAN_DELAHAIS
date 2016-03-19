@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ValidatePostRequest;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -12,8 +13,8 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
     /**
@@ -82,15 +83,15 @@ class PostController extends Controller
      */
     public function show($id)
     {
-
         try{
             $post = Post::findOrFail($id);
-            return view('articles.show')->with(compact('post'));
 
-        }catch (\Exception $e){
-            return redirect()->route('articles.index')->with(['erreur' => 'Oooooooooopps']);
+            $comments = Comment::all();
+
+            return view('articles.show')->with(compact('post', 'comments'));
+        }catch(\Exception $e){
+            return redirect()->route('articles.index')->with(['erreur' => 'Ooooooooooooooooops']);
         }
-
     }
 
     /**
@@ -102,7 +103,7 @@ class PostController extends Controller
     public function edit($id)
     {
         $post   = Post::find($id);
-        $users  = User::all()->lists('name', 'id')  ;
+        $users  = User::all()->lists('name', 'id');
 
         return view('articles.edit')->with(compact('post', 'users'));
     }
@@ -120,7 +121,7 @@ class PostController extends Controller
 
         $post->title   = $request->title;
         $post->content = $request->content;
-       /* $post->user_id = $request->user_id;*/
+        //$post->user_id = $request->user_id;
 
         $post->update();
 
